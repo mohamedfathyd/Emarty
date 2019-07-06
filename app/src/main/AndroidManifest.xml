@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.Emarat.emarty">
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <application
+        android:allowBackup="true"
+        android:hardwareAccelerated="false"
+        android:icon="@drawable/logo"
+        android:label="@string/app_name"
+        android:largeHeap="true"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
+        <activity android:name=".Activity.My_recervations"></activity>
+        <activity android:name=".Activity.New_Recervation" />
+        <activity android:name=".Activity.Main_DataEntrie" />
+        <activity android:name=".Activity.Delete_annonce" />
+        <activity android:name=".Activity.Add_annonce" />
+        <activity android:name=".Activity.Show_user_details" />
+        <activity android:name=".Activity.Show_manager_details" />
+        <activity android:name=".Activity.Foucs_users" />
+        <activity android:name=".Activity.Foucs_Manager" />
+        <activity android:name=".Activity.Delete_Manager" />
+        <activity android:name=".Activity.Add_New_Manager" />
+        <activity android:name=".Activity.SplashActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Activity.Login" />
+        <activity android:name=".Activity.MainActivity" />
+    </application>
+
+</manifest>
