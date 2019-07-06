@@ -3,7 +3,9 @@ package com.Emarat.emarty.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
@@ -24,10 +26,8 @@ import com.Emarat.emarty.model.apiinterface_home;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
 
 import me.anwarshahriar.calligrapher.Calligrapher;
@@ -36,16 +36,18 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class Add_New_Manager extends AppCompatActivity {
-EditText input_date,input_name,input_phone,input_Emaranum,input_password,input_info;
-ImageView image;
+public class Add_new_DataEntry extends AppCompatActivity {
+
+    EditText input_date,input_name,input_phone,input_Emaranum,input_password,input_info;
+    ImageView image;
     AppCompatButton btn_signup;
     String current_date;
-
-
+    int Emara_num;
+    private SharedPreferences sharedpref;
+    private SharedPreferences.Editor edt;
     Call<ResponseBody> call = null;
     private apiinterface_home apiinterface;
-   ProgressDialog progressDialog;
+    ProgressDialog progressDialog;
     final Calendar myCalendar = Calendar.getInstance();
     Bitmap bitmap;
     Toolbar toolbar;
@@ -53,7 +55,7 @@ ImageView image;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add__new__manager);
+        setContentView(R.layout.activity_add_new__data_entry);
         toolbar = (Toolbar) findViewById(R.id.app_bar);
         Calligrapher calligrapher = new Calligrapher(this);
         calligrapher.setFont(this, "Droid.ttf", true);
@@ -69,6 +71,9 @@ ImageView image;
                     }
                 }
         );
+        sharedpref = getSharedPreferences("ManoAd", Context.MODE_PRIVATE);
+        edt = sharedpref.edit();
+        Emara_num=sharedpref.getInt("emara_num",0);
         Intializer();
         String dateStr = "04/05/2010";
         Calendar c = Calendar.getInstance();
@@ -76,8 +81,8 @@ ImageView image;
 
         SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
         String formattedDate = df.format(c.getTime());
-           current_date =formattedDate;
-         //  Toast.makeText(Add_New_Manager.this,current_date,Toast.LENGTH_LONG).show();
+        current_date =formattedDate;
+     //   Toast.makeText(Add_New_Manager.this,current_date,Toast.LENGTH_LONG).show();
         final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
 
             @Override
@@ -97,7 +102,8 @@ ImageView image;
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
-                new DatePickerDialog(Add_New_Manager.this, date, myCalendar
+                new DatePickerDialog(
+                        Add_new_DataEntry.this, date, myCalendar
                         .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
                         myCalendar.get(Calendar.DAY_OF_MONTH)).show();
             }
@@ -132,11 +138,11 @@ ImageView image;
         btn_signup=findViewById(R.id.btn_signup);
     }
     public void fetchInfo() {
-        progressDialog = ProgressDialog.show(Add_New_Manager.this, "جاري أضافة المدير", "Please wait...", false, false);
+        progressDialog = ProgressDialog.show(Add_new_DataEntry.this, "جاري أضافة مدخل بيانات", "Please wait...", false, false);
         progressDialog.show();
         String image;
         try {
-             image = convertToString();
+            image = convertToString();
         }catch (Exception e){
             image="d";
         }
@@ -144,17 +150,17 @@ ImageView image;
 
 
         apiinterface = Apiclient_home.getapiClient().create(apiinterface_home.class);
-        Call<ResponseBody> call = apiinterface.getcontactsadd(input_name.getText().toString(),image,
+        Call<ResponseBody> call = apiinterface.getcontactsadddataentry(input_name.getText().toString(),image,
                 input_phone.getText().toString(),
-                Integer.parseInt(input_Emaranum.getText().toString()), input_password.getText().toString(),current_date,input_date.getText().toString(),
+                Emara_num, input_password.getText().toString(),current_date,input_date.getText().toString(),
                 input_info.getText().toString());
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 progressDialog.dismiss();
 
-                AlertDialog.Builder dlgAlert = new AlertDialog.Builder(Add_New_Manager.this);
-                dlgAlert.setMessage("تم أضافة المدير بنجاح ");
+                AlertDialog.Builder dlgAlert = new AlertDialog.Builder(Add_new_DataEntry.this);
+                dlgAlert.setMessage("تم أضافة مدخل البيانات بنجاح ");
                 dlgAlert.setTitle("الدفتر الألكترونى");
                 dlgAlert.setPositiveButton("OK", null);
                 dlgAlert.setCancelable(true);
@@ -164,7 +170,7 @@ ImageView image;
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Toast.makeText(Add_New_Manager.this, t.toString(), Toast.LENGTH_LONG).show();
+                Toast.makeText(Add_new_DataEntry.this, t.toString(), Toast.LENGTH_LONG).show();
             }
         });
     }

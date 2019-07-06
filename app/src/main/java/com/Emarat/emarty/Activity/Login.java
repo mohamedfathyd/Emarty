@@ -118,6 +118,8 @@ public class Login extends AppCompatActivity {
                         startActivity(new Intent(Login.this,MainActivity.class));}
                         if(contactList.get(0).getType_user()==3){
                             startActivity(new Intent(Login.this,Main_DataEntrie.class));}
+                        if(contactList.get(0).getType_user()==2){
+                            startActivity(new Intent(Login.this,Main_Manager.class));}
                         progressDialog.dismiss();
                     }}
                 catch (Exception e){

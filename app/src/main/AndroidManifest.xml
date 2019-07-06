@@ -17,7 +17,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Activity.My_recervations"></activity>
+        <activity android:name=".Activity.Compare"></activity>
+        <activity android:name=".Activity.My_Expenses" />
+        <activity android:name=".Activity.Revenues_month" />
+        <activity android:name=".Activity.Add_new_Expenses" />
+        <activity android:name=".Activity.MyRecervation_month" />
+        <activity android:name=".Activity.Add_new_DataEntry" />
+        <activity android:name=".Activity.Main_Manager" />
+        <activity android:name=".Activity.My_recervations" />
         <activity android:name=".Activity.New_Recervation" />
         <activity android:name=".Activity.Main_DataEntrie" />
         <activity android:name=".Activity.Delete_annonce" />
@@ -37,6 +44,8 @@
         </activity>
         <activity android:name=".Activity.Login" />
         <activity android:name=".Activity.MainActivity" />
+        <activity android:name=".Activity.Delete_DataEntry" />
+        <activity android:name=".Activity.My_recervations_today" />
     </application>
 
 </manifest>

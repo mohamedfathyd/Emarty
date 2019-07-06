@@ -12,7 +12,7 @@ public interface apiinterface_home {
 
 
     @FormUrlEncoded
-    @POST("Emara_login.php")
+    @POST("montag/WordPad/Emara_login.php")
     Call<List<user_content>>getcontacts_login(@Field("phonee") String phonee, @Field("password") String password);
     @GET("montag/WordPad/Emara_annonce.php")
     Call<List<contact_annonce>> getcontacts_annonce();
@@ -20,7 +20,16 @@ public interface apiinterface_home {
     @POST("montag/WordPad/Emara_add_manager.php")
     Call<ResponseBody> getcontactsadd(@Field("name") String name, @Field("image") String image,
                                       @Field("phone") String phone,
-                                      @Field("Emara_num") int Emara_num,
+                                      @Field("emara_num") int Emara_num,
+                                      @Field("password") String password,
+                                      @Field("start_date") String start_date,
+                                      @Field("end_date") String end_date,
+                                      @Field("details") String details );
+    @FormUrlEncoded
+    @POST("montag/WordPad/Emara_add_DataEntry.php")
+    Call<ResponseBody> getcontactsadddataentry(@Field("name") String name, @Field("image") String image,
+                                      @Field("phone") String phone,
+                                      @Field("emara_num") int Emara_num,
                                       @Field("password") String password,
                                       @Field("start_date") String start_date,
                                       @Field("end_date") String end_date,
@@ -29,6 +38,9 @@ public interface apiinterface_home {
     Call<List<user_content>> getcontacts_manger();
     @GET("montag/WordPad/Emara_all_DataEntries.php")
     Call<List<user_content>> getcontacts_users();
+    @FormUrlEncoded
+    @POST("montag/WordPad/Emara_all_DataEntries_forManager.php")
+    Call<List<user_content>> all_dataentryformanager(@Field("emara_num") int emara_num);
     @FormUrlEncoded
     @POST("montag/WordPad/Emara_delete_manager.php")
     Call<ResponseBody> delete_manager(@Field("id") int id);
@@ -52,5 +64,23 @@ public interface apiinterface_home {
     @FormUrlEncoded
     @POST("montag/WordPad/Emara_all_recervation.php")
     Call<List<Reservation_content>> get_all_recervations(@Field("id") int id);
+    @FormUrlEncoded
+    @POST("montag/WordPad/Emara_all_recervation_today.php")
+    Call<List<Reservation_content>> get_all_recervations_today(@Field("Emara_num") int Emara_num,@Field("Date") String Date);
+
+    @FormUrlEncoded
+    @POST("montag/WordPad/Emara_all_recervation_month.php")
+    Call<List<Reservation_content>> get_all_recervations_month(@Field("Emara_num") int Emara_num,@Field("month") int month,@Field("Date")String Date);
+    @FormUrlEncoded
+    @POST("montag/WordPad/Emara_new_expenses.php")
+    Call<ResponseBody> getcontactsnewexpenses(@Field("name") String name, @Field("price") int price, @Field("month") int month,
+                                              @Field("emara_num") int emara_num,@Field("date")String date );
+
+    @FormUrlEncoded
+    @POST("montag/WordPad/Emara_all_Exp_month.php")
+    Call<List<Exp_content>> get_all_exp_month(@Field("Emara_num") int Emara_num,@Field("month") int month,@Field("Date")String Date);
+    @FormUrlEncoded
+    @POST("montag/WordPad/Emara_update_datelogin.php")
+    Call<ResponseBody> update_manager(@Field("id") int id,@Field("Date")String Date);
 }
 

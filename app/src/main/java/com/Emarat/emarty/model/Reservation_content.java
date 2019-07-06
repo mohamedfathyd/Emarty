@@ -18,7 +18,7 @@ public class Reservation_content {
     @SerializedName("Date_to")
     String Date_to;
     @SerializedName("price")
-    String price;
+    int price;
     @SerializedName("Duration")
     String duration;
     @SerializedName("emara_num")
@@ -80,11 +80,11 @@ public class Reservation_content {
         Date_to = date_to;
     }
 
-    public String getPrice() {
+    public int getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 
