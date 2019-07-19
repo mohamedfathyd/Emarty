@@ -4,12 +4,15 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.DatePicker;
@@ -22,6 +25,9 @@ import com.Emarat.emarty.R;
 import com.Emarat.emarty.model.Apiclient_home;
 import com.Emarat.emarty.model.apiinterface_home;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -223,7 +229,7 @@ int emara_num;
                 dlgAlert.setPositiveButton("OK", null);
                 dlgAlert.setCancelable(true);
                 dlgAlert.create().show();
-
+                addd();
             }
 
             @Override
@@ -231,5 +237,56 @@ int emara_num;
                 Toast.makeText(New_Recervation.this, t.toString(), Toast.LENGTH_LONG).show();
             }
         });
+    }
+    public void addd() {
+        final String filedate="اسم المستأجر : "+input_name.getText().toString()+"\n \n "+
+                "هاتف المستأجر :"+input_phone.getText().toString()+"\n\n"+
+                "رقم هوية المستأجر :"+input_id.getText().toString()+"\n\n"+
+                "تاريخ بدأ الايجار :"+input_datefrom.getText().toString()+"\n\n"+
+                "تاريخ انتهاء الايجار :"+input_dateto.getText().toString()+"\n\n"+
+                "المدة :" + input_duration.getText().toString()+"\n\n"+
+                "السعر :"+ input_price.getText().toString()+"ريال"+"\n\n\n"+
+                "                           الدفتر الألكترونى                            ";
+
+                ;
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("اسم الملف ليتم حفظه :");
+
+// Set up the input
+        final EditText input = new EditText(this);
+// Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+        input.setInputType(InputType.TYPE_CLASS_TEXT );
+        builder.setView(input);
+
+// Set up the buttons
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                try {
+                    File root = new File(Environment.getExternalStorageDirectory(), "الدفتر الألكترونى");
+                    if (!root.exists()) {
+                        root.mkdirs();
+                    }
+                    File gpxfile = new File(root, input.getText().toString()+".txt");
+                    FileWriter writer = new FileWriter(gpxfile);
+                    writer.append(filedate);
+                    writer.flush();
+                    writer.close();
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
+
     }
 }

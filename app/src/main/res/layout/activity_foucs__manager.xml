@@ -27,6 +27,28 @@
             android:layout_gravity="center"
             android:id="@+id/toolbar_title" />
     </android.support.v7.widget.Toolbar>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@id/app_bar"
+        android:id="@+id/aaa"
+android:background="@drawable/rounded_edittext_t"
+        android:orientation="horizontal">
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:gravity="center"
+            android:id="@+id/search_txt"
+            android:layout_alignParentRight="true" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+         android:id="@+id/search_button"
+            android:background="@drawable/ic_search_black_24dp"
+
+            />
+    </RelativeLayout>
     <android.support.v7.widget.RecyclerView
 
         android:layout_width="match_parent"
@@ -34,7 +56,7 @@
           android:padding="3dp"
         android:scrollbars="vertical"
         android:id="@+id/review"
-        android:layout_below="@+id/app_bar"
+        android:layout_below="@+id/aaa"
         >
 
     </android.support.v7.widget.RecyclerView>

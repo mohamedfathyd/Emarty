@@ -36,6 +36,9 @@ public interface apiinterface_home {
                                       @Field("details") String details );
     @GET("montag/WordPad/Emara_all_manager.php")
     Call<List<user_content>> getcontacts_manger();
+    @FormUrlEncoded
+    @POST("montag/WordPad/Emara_all_manager_search.php")
+    Call<List<user_content>> getcontacts_manger_search(@Field("name") String name);
     @GET("montag/WordPad/Emara_all_DataEntries.php")
     Call<List<user_content>> getcontacts_users();
     @FormUrlEncoded

@@ -1,16 +1,24 @@
 package com.Emarat.emarty.Activity;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
+import android.os.Build;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -21,10 +29,17 @@ import com.Emarat.emarty.model.Apiclient_home;
 import com.Emarat.emarty.model.Reservation_content;
 import com.Emarat.emarty.model.apiinterface_home;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.List;
 
+import de.siegmar.fastcsv.writer.CsvWriter;
 import me.anwarshahriar.calligrapher.Calligrapher;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -40,7 +55,7 @@ public class MyRecervation_month extends AppCompatActivity {
     private apiinterface_home apiinterface;
     int id = 0;
     String name;
-
+ImageView aa;
     Spinner spinner;
     int month;
     String Date;
@@ -76,6 +91,7 @@ public class MyRecervation_month extends AppCompatActivity {
                     }
                 }
         );
+        aa=findViewById(R.id.aa);
         spinner=findViewById(R.id.spin);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -152,7 +168,12 @@ public class MyRecervation_month extends AppCompatActivity {
         layoutManager = new GridLayoutManager(this, 1);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
-
+aa.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+        addtocsv();
+    }
+});
     }
 
     public void fetchInfo() {
@@ -175,4 +196,86 @@ public class MyRecervation_month extends AppCompatActivity {
 
             }
         });
-    }}
+    }
+
+public void  addtocsv(){
+
+    final ArrayList<String[]> data = new ArrayList<>();
+    final String[] a=new String[100];
+    final String[] b=new String[100];
+    final String[] c=new String[100];
+    final String[] d=new String[100];
+    final String[] e=new String[100];
+    final String[] f=new String[100];
+    final String[] g=new String[100];
+    for(int i= 0;i<contactList.size();i++){
+        a[i]=contactList.get(i).getName();
+        b[i]=contactList.get(i).getPhone();
+        c[i]=contactList.get(i).getDuration();
+        d[i]=contactList.get(i).getPrice()+"ريال";
+        e[i]=contactList.get(i).getDate_from();
+        f[i]=contactList.get(i).getDate_to();
+        g[i]=contactList.get(i).getMonths();
+
+    }
+    data.add(a);
+    data.add(b);
+    data.add(c);
+    data.add(d);
+    data.add(e);
+    data.add(f);
+    data.add(g);
+
+    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    builder.setTitle("اسم الملف ليتم حفظه : ");
+
+// Set up the input
+    final EditText input = new EditText(this);
+// Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+    input.setInputType(InputType.TYPE_CLASS_TEXT );
+    builder.setView(input);
+
+// Set up the buttons
+    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            try {
+                File root = new File(Environment.getExternalStorageDirectory(), "الدفتر الألكترونى");
+                if (!root.exists()) {
+                    root.mkdirs();
+                }
+                File gpxfile = new File(root, input.getText().toString()+".txt");
+                FileWriter writer = new FileWriter(gpxfile);
+                for(int i= 0;i<contactList.size();i++){
+                  writer.append("الاسم :" +contactList.get(i).getName()+"\n");
+                    writer.append("رقم الهاتف :"+ contactList.get(i).getPhone()+"\n");
+                    writer.append("المده  :"+ contactList.get(i).getDuration()+"\n");
+                    writer.append("السعر  :"+ contactList.get(i).getPrice()+"ريال"+ "\n\n" );
+                    writer.append("___________________________________________________________"+"\n");
+
+
+
+                }
+                writer.flush();
+                writer.close();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+    });
+    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            dialog.cancel();
+        }
+    });
+
+    builder.show();
+
+}
+}
+
+
+

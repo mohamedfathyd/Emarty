@@ -8,6 +8,8 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -39,7 +41,8 @@ public class Foucs_Manager extends AppCompatActivity {
     Typeface myTypeface;
     Intent intent;
     TextView textView;
-
+    EditText search_txt;
+    ImageView search_button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +75,14 @@ public class Foucs_Manager extends AppCompatActivity {
         layoutManager = new GridLayoutManager(this, 1);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
+        search_txt=findViewById(R.id.search_txt);
+        search_button=findViewById(R.id.search_button);
+        search_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fetchInfo_search();
+            }
+        });
         fetchInfo();
     }
 
@@ -94,4 +105,26 @@ public class Foucs_Manager extends AppCompatActivity {
 
             }
         });
-    }}
+    }
+    public void fetchInfo_search() {
+        progressBar.setVisibility(View.VISIBLE);
+        apiinterface = Apiclient_home.getapiClient().create(apiinterface_home.class);
+        Call<List<user_content>> call = apiinterface.getcontacts_manger_search(search_txt.getText().toString());
+        call.enqueue(new Callback<List<user_content>>() {
+            @Override
+            public void onResponse(Call<List<user_content>> call, Response<List<user_content>> response) {
+                contactList = response.body();
+                progressBar.setVisibility(View.GONE);
+                recyclerAdapter_secondry = new RecyclerAdapter_manager(Foucs_Manager.this, contactList);
+                recyclerView.setAdapter(recyclerAdapter_secondry);
+
+
+            }
+
+            @Override
+            public void onFailure(Call<List<user_content>> call, Throwable t) {
+                progressBar.setVisibility(View.GONE);
+            }
+        });
+    }
+}

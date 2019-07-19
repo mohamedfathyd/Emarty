@@ -36,7 +36,7 @@ public class Main_Manager extends AppCompatActivity {
     Button add_modir,delete_modir,motaba,motaba_all,add_annonce,delete_annonce,add_,delete_;
     private List<contact_annonce> contactList_annonce;
     ProgressBar progressBar;
-    private apiinterface_home apiinterface;
+
     int x=0;
     private RecyclerView recyclerView,recyclerView2;
     private RecyclerView.LayoutManager layoutManager1,layoutManager2;
@@ -47,6 +47,7 @@ public class Main_Manager extends AppCompatActivity {
     private static final String EXTRA_TEXT = "text";
 int user_id;
 String Date;
+    private apiinterface_home apiinterface;
     private SharedPreferences sharedpref;
     private SharedPreferences.Editor edt;
     @Override
